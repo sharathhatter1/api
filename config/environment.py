@@ -12,7 +12,7 @@ class Environment:
         
     @property
     def base_url(self) -> str:
-        default_url = "https://api.weatherapi.com/v1"
+        default_url = "https://fakestoreapi.com/products"
         urls = {
             "qa": os.getenv("BASE_URL_QA", default_url),
             "staging": os.getenv("BASE_URL_STAGING", default_url),

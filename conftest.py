@@ -3,12 +3,6 @@ import requests
 from config import env
 from fixtures import *
 
-# def pytest_configure(config):
-#     config.addinivalue_line("markers", "smoke: smoke tests")
-#     config.addinivalue_line("markers", "regression: regression tests") 
-#     config.addinivalue_line("markers", "e2e: end-to-end tests")
-#     config.addinivalue_line("markers", "schema: schema validation tests")
-
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     print(f"\nRunning tests against: {env.base_url}")

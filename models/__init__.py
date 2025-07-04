@@ -1,6 +1,3 @@
-from .current import WeatherCurrent
-from .forecast import WeatherForecast
-from .alert import WeatherAlert
-from .error import ErrorResponse
+from .products import Product
 
-__all__ = ["WeatherCurrent", "WeatherForecast", "WeatherAlert", "ErrorResponse"]
+__all__ = ["Product"]

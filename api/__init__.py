@@ -1,2 +1,1 @@
-from  .weather_api import WeatherAPI
-from  .forecast_api import ForecastAPI
+from .products_api import ProductsAPI

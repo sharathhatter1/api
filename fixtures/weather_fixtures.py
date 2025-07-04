@@ -1,16 +1,5 @@
 import  pytest
-from api.weather_api import WeatherAPI
-from api.forecast_api import ForecastAPI
 from utils import HTTPClient
-
-@pytest.fixture(scope="session")
-def weather_api(http_client):
-    return WeatherAPI(client=http_client)
-
-
-@pytest.fixture(scope="session")
-def forecast_api(http_client):
-    return ForecastAPI(client=http_client)
 
 
 @pytest.fixture(scope="session") 

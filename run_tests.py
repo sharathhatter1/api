@@ -32,6 +32,8 @@ def run_tests(env="qa", markers=None, parallel=False, generate_report=True):
     if generate_report and result.returncode == 0:
         print("\nGenerating Allure report...")
         subprocess.run(["allure", "generate", "allure-results", "-o", "allure-report", "--clean"])
+        subprocess.run(["allure", "open", "allure-report"])
+
     
     return result.returncode
 
