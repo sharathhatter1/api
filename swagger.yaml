@@ -1,0 +1,224 @@
+openapi:  3.0.0
+info:
+  title: Weather API
+  version: 1.0.0
+  description: Weather API for testing automation framework
+
+servers:
+  - url: https://api.weather-qa.com
+    description: QA Environment
+  - url: https://api.weather-staging.com
+    description: Staging Environment
+
+paths:
+  /current-weather:
+    get:
+      summary: Get current weather
+      parameters:
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current weather data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherCurrent'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+        '404':
+          description: City not found
+
+  /forecast:
+    get:
+      summary: Get weather forecast
+      parameters:
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: days
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 7
+      responses:
+        '200':
+          description: Weather forecast data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherForecast'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /weather/alert:
+    post:
+      summary: Create weather alert
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeatherAlertRequest'
+      responses:
+        '201':
+          description: Alert created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherAlert'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+
+  /weather/alert/{id}:
+    put:
+      summary: Update weather alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeatherAlertRequest'
+      responses:
+        '200':
+          description: Alert updated
+        '404':
+          description: Alert not found
+
+    patch:
+      summary: Partially update weather alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeatherAlertPatch'
+      responses:
+        '200':
+          description: Alert updated
+        '404':
+          description: Alert not found
+
+    delete:
+      summary: Delete weather alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Alert deleted
+        '404':
+          description: Alert not found
+
+components:
+  schemas:
+    WeatherCurrent:
+      type: object
+      properties:
+        city:
+          type: string
+        temperature:
+          type: number
+        humidity:
+          type: integer
+        condition:
+          type: string
+        timestamp:
+          type: string
+
+    WeatherForecast:
+      type: object
+      properties:
+        city:
+          type: string
+        days:
+          type: array
+          items:
+            type: object
+
+    WeatherAlertRequest:
+      type: object
+      required:
+        - city
+        - condition
+        - threshold
+        - email
+      properties:
+        city:
+          type: string
+        condition:
+          type: string
+        threshold:
+          type: number
+        email:
+          type: string
+
+    WeatherAlert:
+      allOf:
+        - $ref: '#/components/schemas/WeatherAlertRequest'
+        - type: object
+          properties:
+            id:
+              type: integer
+            active:
+              type: boolean
+
+    WeatherAlertPatch:
+      type: object
+      properties:
+        threshold:
+          type: number
+        active:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+security:
+  - ApiKeyAuth: []
+ 
