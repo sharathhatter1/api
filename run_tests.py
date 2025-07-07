@@ -3,6 +3,7 @@ import subprocess
 import sys
 import argparse
 from pathlib import Path
+from config.environment import env
 
 def run_tests(env="qa", markers=None, parallel=False, generate_report=True):
     """Run tests with specified parameters"""
@@ -10,9 +11,12 @@ def run_tests(env="qa", markers=None, parallel=False, generate_report=True):
     # Set environment
     import os
     os.environ["ENV"] = env
+
+    Path("reports").mkdir(exist_ok=True)
+    Path("allure-results").mkdir(exist_ok=True)
     
     # Build pytest command
-    cmd = ["python", "-m", "pytest"]
+    cmd = ["python", "-m", "pytest", "--alluredir=allure-results"]
     
     if markers:
         cmd.extend(["-m", markers])

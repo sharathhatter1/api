@@ -12,7 +12,7 @@ class Environment:
         
     @property
     def base_url(self) -> str:
-        default_url = "https://fakestoreapi.com/products"
+        default_url = "https://fakestoreapi.com"
         urls = {
             "qa": os.getenv("BASE_URL_QA", default_url),
             "staging": os.getenv("BASE_URL_STAGING", default_url),
@@ -27,6 +27,14 @@ class Environment:
     @property
     def timeout(self) -> int:
         return int(os.getenv("TIMEOUT", "30"))
+    
+    @property
+    def username(self) -> str:
+        return os.getenv("USERNAME", "")
+
+    @property
+    def password(self) -> str:
+        return os.getenv("PASSWORD", "")
 
 env = Environment()
  

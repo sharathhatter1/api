@@ -3,7 +3,6 @@ from api.products_api import ProductsAPI
 import allure
 
 
-@allure.feature("Forecast")
 @pytest.fixture(scope="module")
 def api():
     return ProductsAPI()
